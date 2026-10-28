@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Connection Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      padding: 24px;
+    }
+    button {
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    pre {
+      background: #222;
+      padding: 16px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+  <h2>API Connection Test</h2>
+  <p>Read-only URL test — no licenses are created or changed.</p>
+
+  <button id="test">Test URL</button>
+  <pre id="result">Not tested yet</pre>
+
+  <script>
+    const url =
+      "https://raw.githubusercontent.com/ZeroEngine123/Esp-Project-Handler/refs/heads/main/BlackBoxSDK.Json";
+
+    document.getElementById("test").onclick = async () => {
+      const result = document.getElementById("result");
+      result.textContent = "Checking connection...";
+
+      try {
+        const response = await fetch(url, { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
+        }
+
+        const data = await response.json();
+        result.textContent =
+          "URL reachable\n\nHTTP: " + response.status +
+          "\n\nJSON:\n" + JSON.stringify(data, null, 2);
+      } catch (error) {
+        result.textContent =
+          "Connection test failed:\n" + error.message;
+      }
+    };
+  </script>
+</body>
+</html>
