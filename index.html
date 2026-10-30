@@ -3,377 +3,324 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>License Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KeyDock License Dashboard</title>
 <style>
-:root{--bg:#fff;--text:#171717;--muted:#737373;--line:#e5e5e5;--soft:#f7f7f7;--black:#171717;--green:#15803d;--red:#b91c1c}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:14px Arial,sans-serif}
-button,input,select{font:inherit}
-button{cursor:pointer}
-header{border-bottom:1px solid var(--line);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-h1{font-size:20px;margin:0;font-weight:700}
-h2{font-size:16px;margin:0 0 16px}
-small,.muted{color:var(--muted)}
-.container{max-width:1150px;margin:auto;padding:22px 18px}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
-nav button,.btn{background:white;border:1px solid var(--line);border-radius:7px;padding:10px 13px;color:var(--text)}
-nav button.active,.btn.primary{background:var(--black);color:white;border-color:var(--black)}
-.btn.danger{color:var(--red);border-color:#fecaca}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}
-.card,.panel{border:1px solid var(--line);border-radius:9px;padding:17px;background:white}
-.metric{font-size:25px;font-weight:700;margin-top:10px}
-.panel{margin-bottom:18px}
-.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
-label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
-input,select{width:100%;min-width:0;padding:11px;border:1px solid #d4d4d4;border-radius:7px;background:white;color:var(--text)}
-input:focus,select:focus{outline:2px solid #a3a3a3;outline-offset:1px}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
-.toolbar{display:flex;gap:9px;margin-bottom:14px}
-.toolbar input{flex:1}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;white-space:nowrap}
-th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line)}
-th{font-size:12px;color:var(--muted);font-weight:600}
-td{font-size:13px}
-.status{display:inline-block;padding:5px 8px;border-radius:5px;background:var(--soft);font-size:12px}
-.status.Active{color:var(--green);background:#f0fdf4}
-.status.Expired,.status.Revoked{color:var(--red);background:#fef2f2}
-.row-actions{display:flex;gap:6px}
-.row-actions button{padding:6px 8px;font-size:12px}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#172033}
+header{background:#111827;color:white;padding:18px 22px}
+header h2{margin:0}
+nav{display:flex;gap:8px;flex-wrap:wrap;background:#fff;padding:12px 18px}
+nav button,.btn{border:0;border-radius:7px;padding:10px 14px;cursor:pointer;background:#2563eb;color:white}
+nav button{background:#e2e8f0;color:#172033}
+nav button.active{background:#2563eb;color:white}
+main{max-width:1100px;margin:22px auto;padding:0 14px}
+.panel{background:white;border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:0 2px 8px #0000000c}
+h3{margin-top:0}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:7px;margin:6px 0 12px}
+textarea{min-height:110px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.stat{background:#eff6ff;padding:18px;border-radius:9px}
+.stat strong{display:block;font-size:25px;margin-top:8px}
 .page{display:none}
 .page.active{display:block}
-.notice{background:var(--soft);border:1px solid var(--line);padding:12px;border-radius:7px;margin-bottom:18px;line-height:1.6}
-.empty{text-align:center;padding:28px;color:var(--muted)}
-.key{font-family:monospace;font-size:12px}
-footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#171717;color:white;padding:12px 18px;border-radius:8px;display:none;max-width:90%;z-index:5}
-@media(max-width:720px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.fields{grid-template-columns:1fr 1fr}header{padding:15px}.container{padding:16px 12px}.metric{font-size:22px}}
-@media(max-width:420px){.fields{grid-template-columns:1fr}.toolbar{flex-wrap:wrap}.toolbar input{flex-basis:100%}}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px;border-bottom:1px solid #e2e8f0;font-size:14px}
+.table-wrap{overflow-x:auto}
+.status{font-weight:bold}
+.small{font-size:13px;color:#64748b}
+.danger{background:#dc2626}
+.green{color:#15803d}
+.red{color:#dc2626}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#111827;color:#d1fae5;padding:14px;border-radius:8px;min-height:65px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
 </style>
 </head>
 <body>
+
 <header>
-  <div>
-    <h1>License Admin</h1>
-    <small>License management dashboard</small>
-  </div>
-  <span class="status">DEMO MODE</span>
+<h2>KeyDock License Dashboard</h2>
+<p class="small" style="color:#cbd5e1">Local Demo License Manager</p>
 </header>
 
-<main class="container">
-  <div class="notice">
-    <strong>Local demo console</strong><br>
-    Data is stored in this browser only. This console does not connect to an external licensing server or modify another app's licenses.
-  </div>
+<nav>
+<button class="active" onclick="showPage('dashboard',this)">Dashboard</button>
+<button onclick="showPage('licenses',this)">Licenses</button>
+<button onclick="showPage('devices',this)">Devices</button>
+<button onclick="showPage('api',this)">API Tester</button>
+<button onclick="showPage('settings',this)">Settings</button>
+</nav>
 
-  <nav>
-    <button class="active" data-page="dashboard">Dashboard</button>
-    <button data-page="licenses">Licenses</button>
-    <button data-page="devices">Devices</button>
-    <button data-page="settings">Settings</button>
-  </nav>
+<main>
 
-  <section id="dashboard" class="page active">
-    <h2>Overview</h2>
-    <div class="grid">
-      <div class="card"><small>Total licenses</small><div class="metric" id="total">0</div></div>
-      <div class="card"><small>Active</small><div class="metric" id="active">0</div></div>
-      <div class="card"><small>Expired</small><div class="metric" id="expired">0</div></div>
-      <div class="card"><small>Revoked</small><div class="metric" id="revoked">0</div></div>
-    </div>
-    <div class="panel">
-      <h2>Create license</h2>
-      <form id="createForm">
-        <div class="fields">
-          <div>
-            <label for="customer">Customer / Label</label>
-            <input id="customer" placeholder="Customer name">
-          </div>
-          <div>
-            <label for="duration">Duration</label>
-            <select id="duration">
-              <option value="1">1 day</option>
-              <option value="7">7 days</option>
-              <option value="30" selected>30 days</option>
-              <option value="90">90 days</option>
-              <option value="365">365 days</option>
-              <option value="custom">Custom days</option>
-              <option value="0">No expiry (demo)</option>
-            </select>
-          </div>
-          <div id="customWrap" style="display:none">
-            <label for="customDays">Custom days</label>
-            <input id="customDays" type="number" min="1" max="36500" value="14">
-          </div>
-          <div>
-            <label for="deviceLimit">Device limit</label>
-            <input id="deviceLimit" type="number" min="1" max="100" value="1" required>
-          </div>
-        </div>
-        <div class="actions">
-          <button class="btn primary" type="submit">Create License</button>
-        </div>
-      </form>
-    </div>
-    <div class="panel">
-      <h2>Recent licenses</h2>
-      <div class="table-wrap"><table>
-        <thead><tr><th>License key</th><th>Customer</th><th>Status</th><th>Expires</th></tr></thead>
-        <tbody id="recent"></tbody>
-      </table></div>
-    </div>
-  </section>
+<section id="dashboard" class="page active">
+<div class="grid">
+<div class="stat">Total Licenses<strong id="total">0</strong></div>
+<div class="stat">Active<strong id="active">0</strong></div>
+<div class="stat">Expired<strong id="expired">0</strong></div>
+<div class="stat">Revoked<strong id="revoked">0</strong></div>
+</div>
+<div class="panel">
+<h3>Welcome</h3>
+<p>This is a local demonstration dashboard. Demo licenses are stored in this browser only.</p>
+<p class="small">No real license server is connected to the local demo license generator.</p>
+</div>
+</section>
 
-  <section id="licenses" class="page">
-    <h2>License management</h2>
-    <div class="toolbar">
-      <input id="search" placeholder="Search key or customer...">
-      <select id="filter" style="max-width:150px">
-        <option value="All">All statuses</option>
-        <option>Active</option>
-        <option>Expired</option>
-        <option>Revoked</option>
-      </select>
-    </div>
-    <div class="panel">
-      <div class="table-wrap"><table>
-        <thead><tr><th>Key</th><th>Customer</th><th>Status</th><th>Expires</th><th>Devices</th><th>Actions</th></tr></thead>
-        <tbody id="licenseRows"></tbody>
-      </table></div>
-      <div id="empty" class="empty" style="display:none">No licenses found.</div>
-    </div>
-    <div class="actions">
-      <button class="btn" id="exportBtn">Export JSON</button>
-      <button class="btn danger" id="clearBtn">Clear all demo data</button>
-    </div>
-  </section>
+<section id="licenses" class="page">
+<div class="panel">
+<h3>Create Demo License</h3>
+<label>Key Name</label>
+<input id="keyName" placeholder="Example: Test User">
+<label>Duration</label>
+<select id="duration">
+<option value="1">1 Day</option>
+<option value="7">7 Days</option>
+<option value="30" selected>30 Days</option>
+<option value="90">90 Days</option>
+<option value="365">365 Days</option>
+</select>
+<label>Device Limit</label>
+<input id="deviceLimit" type="number" min="1" value="1">
+<button class="btn" onclick="createLicense()">Create Local Demo Key</button>
+<p class="small">This creates a local demonstration record, not a server-issued app license.</p>
+</div>
 
-  <section id="devices" class="page">
-    <h2>Device overview</h2>
-    <div class="notice">Demo mode has no connection to real devices. Registered device information can only be displayed after an authorized backend supplies it.</div>
-    <div class="panel">
-      <div class="table-wrap"><table>
-        <thead><tr><th>License</th><th>Customer</th><th>Device limit</th><th>Registered devices</th></tr></thead>
-        <tbody id="deviceRows"></tbody>
-      </table></div>
-    </div>
-  </section>
+<div class="panel">
+<h3>License List</h3>
+<input id="search" placeholder="Search license..." oninput="render()">
+<div class="table-wrap">
+<table>
+<thead><tr><th>Name</th><th>Key</th><th>Status</th><th>Expiry</th><th>Devices</th><th>Actions</th></tr></thead>
+<tbody id="licenseRows"></tbody>
+</table>
+</div>
+</div>
+</section>
 
-  <section id="settings" class="page">
-    <h2>Settings</h2>
-    <div class="panel">
-      <label>Console mode</label>
-      <input value="Local demo — no server connected" disabled>
-      <p class="muted">Your licenses are saved in this browser's local storage. Clearing browser data may erase them.</p>
-      <label>Backend API status</label>
-      <input value="Not connected" disabled>
-      <p class="muted">A real backend needs documented endpoints, authorized credentials, and a database. Never put secret API keys in this HTML file.</p>
-      <div class="actions"><button class="btn" id="backupBtn">Download backup</button><button class="btn" id="importBtn">Import backup</button><input id="importFile" type="file" accept=".json,application/json" hidden></div>
-    </div>
-  </section>
+<section id="devices" class="page">
+<div class="panel">
+<h3>Device Overview</h3>
+<p class="small">Local demo records only. No external app devices are connected.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>License</th><th>Device Limit</th><th>Registered Devices</th></tr></thead>
+<tbody id="deviceRows"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section id="api" class="page">
+<div class="panel">
+<h3>API Connection Tester</h3>
+<label>Endpoint URL</label>
+<input id="apiUrl" value="https://jitustore.shop/keydock_connect.php">
+<button class="btn" onclick="testAPI()">Test API Connection</button>
+<p id="apiStatus" class="status">Not tested</p>
+<h3>Server Response</h3>
+<pre id="apiResult">No response yet.</pre>
+<p class="small">This performs a basic GET connection test only. It does not create keys, authenticate users, or bypass an app's license checks. Browser CORS restrictions may prevent reading the response.</p>
+</div>
+</section>
+
+<section id="settings" class="page">
+<div class="panel">
+<h3>Data Management</h3>
+<div class="actions">
+<button class="btn" onclick="exportData()">Export JSON</button>
+<button class="btn" onclick="document.getElementById('importFile').click()">Import JSON</button>
+<button class="btn danger" onclick="clearData()">Clear Local Demo Data</button>
+</div>
+<input type="file" id="importFile" accept=".json,application/json" hidden onchange="importData(event)">
+</div>
+<div class="panel">
+<h3>About</h3>
+<p>KeyDock License Dashboard — Local Demo Version</p>
+<p class="small">Data is stored in browser localStorage. The API tester is separate from the local demo license manager.</p>
+</div>
+</section>
+
 </main>
-<footer>License Admin · Local Demo</footer>
-<div id="toast" role="status"></div>
 
 <script>
-"use strict";
-const STORAGE_KEY = "license_admin_demo_v1";
-let licenses = loadData();
+const STORAGE_KEY = "keydock_local_demo_v1";
+let licenses = [];
 
 function loadData(){
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    return Array.isArray(data) ? data : [];
-  } catch { return []; }
+ try{
+  licenses = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  if(!Array.isArray(licenses)) licenses=[];
+ }catch(e){licenses=[]}
+ render();
 }
+
 function saveData(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(licenses));
-  render();
+ localStorage.setItem(STORAGE_KEY,JSON.stringify(licenses));
+ render();
 }
-function toast(message){
-  const el = document.getElementById("toast");
-  el.textContent = message;
-  el.style.display = "block";
-  clearTimeout(toast.timer);
-  toast.timer = setTimeout(()=>el.style.display="none",2500);
+
+function showPage(id,button){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ render();
 }
-function esc(value){
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[c]);
+
+function makeDemoKey(){
+ return "DEMO-"+crypto.randomUUID().replaceAll("-","").slice(0,16).toUpperCase();
 }
-function makeKey(){
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  const bytes = new Uint8Array(16);
-  crypto.getRandomValues(bytes);
-  const parts = [];
-  for(let i=0;i<4;i++){
-    let part = "";
-    for(let j=0;j<4;j++) part += alphabet[bytes[i*4+j] % alphabet.length];
-    parts.push(part);
-  }
-  return "DEMO-" + parts.join("-");
+
+function createLicense(){
+ const name=document.getElementById("keyName").value.trim();
+ const days=Number(document.getElementById("duration").value);
+ const limit=Math.max(1,Number(document.getElementById("deviceLimit").value)||1);
+ if(!name){alert("Enter a key name");return}
+ const expiry=new Date(Date.now()+days*86400000).toISOString();
+ licenses.push({
+  id:crypto.randomUUID(),
+  name,
+  key:makeDemoKey(),
+  status:"Active",
+  expiry,
+  deviceLimit:limit,
+  devices:[]
+ });
+ document.getElementById("keyName").value="";
+ saveData();
+ alert("Local demo key created.");
 }
-function statusOf(item){
-  if(item.status === "Revoked") return "Revoked";
-  if(item.expiresAt && Date.now() >= item.expiresAt) return "Expired";
-  return "Active";
+
+function getStatus(item){
+ if(item.status==="Revoked")return "Revoked";
+ if(new Date(item.expiry).getTime()<Date.now())return "Expired";
+ return "Active";
 }
-function dateOf(timestamp){
-  return timestamp ? new Date(timestamp).toLocaleString() : "No expiry";
-}
-function createLicense(event){
-  event.preventDefault();
-  const customer = document.getElementById("customer").value.trim() || "Unassigned";
-  const durationChoice = document.getElementById("duration").value;
-  const days = durationChoice === "custom"
-    ? Number(document.getElementById("customDays").value)
-    : Number(durationChoice);
-  const deviceLimit = Number(document.getElementById("deviceLimit").value);
-  if(durationChoice === "custom" && (!Number.isInteger(days)||days<1||days>36500)){
-    toast("Enter a valid duration."); return;
-  }
-  if(!Number.isInteger(deviceLimit)||deviceLimit<1||deviceLimit>100){
-    toast("Device limit must be between 1 and 100."); return;
-  }
-  const now = Date.now();
-  let key = makeKey();
-  while(licenses.some(x=>x.key===key)) key=makeKey();
-  licenses.unshift({
-    id: crypto.randomUUID ? crypto.randomUUID() : String(now)+Math.random(),
-    key, customer, deviceLimit, createdAt:now,
-    expiresAt:days===0 ? null : now + days*86400000,
-    status:"Active", devices:[]
-  });
-  saveData();
-  document.getElementById("createForm").reset();
-  document.getElementById("duration").value="30";
-  document.getElementById("deviceLimit").value="1";
-  document.getElementById("customWrap").style.display="none";
-  toast("Demo license created.");
-}
+
 function render(){
-  licenses.forEach(x=>{if(!Array.isArray(x.devices))x.devices=[];});
-  const counts={Active:0,Expired:0,Revoked:0};
-  licenses.forEach(x=>counts[statusOf(x)]++);
-  document.getElementById("total").textContent=licenses.length;
-  document.getElementById("active").textContent=counts.Active;
-  document.getElementById("expired").textContent=counts.Expired;
-  document.getElementById("revoked").textContent=counts.Revoked;
-
-  const recent=licenses.slice(0,5);
-  document.getElementById("recent").innerHTML=recent.length?recent.map(x=>`
-    <tr><td class="key">${esc(x.key)}</td><td>${esc(x.customer)}</td>
-    <td><span class="status ${statusOf(x)}">${statusOf(x)}</span></td>
-    <td>${esc(dateOf(x.expiresAt))}</td></tr>`).join("")
-    :'<tr><td colspan="4" class="empty">Create your first demo license.</td></tr>';
-
-  const q=document.getElementById("search").value.toLowerCase();
-  const filter=document.getElementById("filter").value;
-  const shown=licenses.filter(x=>
-    (x.key.toLowerCase().includes(q)||x.customer.toLowerCase().includes(q)) &&
-    (filter==="All"||statusOf(x)===filter)
-  );
-  document.getElementById("licenseRows").innerHTML=shown.map(x=>`
-    <tr>
-      <td class="key">${esc(x.key)}<br><button class="btn" data-action="copy" data-id="${esc(x.id)}">Copy</button></td>
-      <td>${esc(x.customer)}</td>
-      <td><span class="status ${statusOf(x)}">${statusOf(x)}</span></td>
-      <td>${esc(dateOf(x.expiresAt))}</td>
-      <td>${x.devices.length} / ${x.deviceLimit}</td>
-      <td><div class="row-actions">
-        <button class="btn" data-action="expire" data-id="${esc(x.id)}">Expire</button>
-        <button class="btn danger" data-action="revoke" data-id="${esc(x.id)}">Revoke</button>
-      </div></td>
-    </tr>`).join("");
-  document.getElementById("empty").style.display=shown.length?"none":"block";
-  document.getElementById("deviceRows").innerHTML=licenses.map(x=>`
-    <tr><td class="key">${esc(x.key)}</td><td>${esc(x.customer)}</td>
-    <td>${x.deviceLimit}</td><td>${x.devices.length}</td></tr>`).join("")
-    ||'<tr><td colspan="4" class="empty">No licenses yet.</td></tr>';
-}
-function downloadJSON(filename, data){
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-  a.href=url;a.download=filename;a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-document.querySelectorAll("nav button").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b===btn));
-    document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===btn.dataset.page));
+ const q=(document.getElementById("search")?.value||"").toLowerCase();
+ const rows=document.getElementById("licenseRows");
+ if(rows){
+  rows.innerHTML="";
+  licenses.filter(x=>(x.name+" "+x.key).toLowerCase().includes(q))
+  .forEach(x=>{
+   const status=getStatus(x);
+   const tr=document.createElement("tr");
+   [x.name,x.key,status,new Date(x.expiry).toLocaleString(),
+    `${(x.devices||[]).length}/${x.deviceLimit}`].forEach(value=>{
+     const td=document.createElement("td");
+     td.textContent=value;
+     tr.appendChild(td);
+    });
+   const action=document.createElement("td");
+   const revoke=document.createElement("button");
+   revoke.className="btn danger";
+   revoke.textContent="Revoke";
+   revoke.onclick=()=>revokeLicense(x.id);
+   const expire=document.createElement("button");
+   expire.className="btn";
+   expire.textContent="Expire";
+   expire.onclick=()=>expireLicense(x.id);
+   action.append(revoke,expire);
+   tr.appendChild(action);
+   rows.appendChild(tr);
   });
-});
-document.getElementById("duration").addEventListener("change",e=>{
-  document.getElementById("customWrap").style.display=e.target.value==="custom"?"block":"none";
-});
-document.getElementById("createForm").addEventListener("submit",createLicense);
-document.getElementById("search").addEventListener("input",render);
-document.getElementById("filter").addEventListener("change",render);
+ }
+ const total=licenses.length;
+ document.getElementById("total").textContent=total;
+ document.getElementById("active").textContent=licenses.filter(x=>getStatus(x)==="Active").length;
+ document.getElementById("expired").textContent=licenses.filter(x=>getStatus(x)==="Expired").length;
+ document.getElementById("revoked").textContent=licenses.filter(x=>getStatus(x)==="Revoked").length;
 
-document.addEventListener("click",async event=>{
-  const btn=event.target.closest("button[data-action]");
-  if(!btn)return;
-  const item=licenses.find(x=>x.id===btn.dataset.id);
-  if(!item)return;
-  if(btn.dataset.action==="copy"){
-    try{
-      await navigator.clipboard.writeText(item.key);
-      toast("Key copied.");
-    }catch{toast("Clipboard unavailable; select and copy the key manually.");}
-  }
-  if(btn.dataset.action==="expire"){
-    if(!confirm("Expire this demo license now?"))return;
-    item.expiresAt=Date.now();
-    item.status="Active";
-    saveData();toast("Demo license expired.");
-  }
-  if(btn.dataset.action==="revoke"){
-    if(!confirm("Revoke this demo license?"))return;
-    item.status="Revoked";
-    saveData();toast("Demo license revoked.");
-  }
-});
-document.getElementById("exportBtn").addEventListener("click",()=>{
-  downloadJSON("licenses-demo-backup.json",licenses);
-});
-document.getElementById("backupBtn").addEventListener("click",()=>{
-  downloadJSON("licenses-demo-backup.json",licenses);
-});
-document.getElementById("clearBtn").addEventListener("click",()=>{
-  if(!confirm("Permanently clear all demo licenses in this browser?"))return;
-  licenses=[];saveData();toast("Demo data cleared.");
-});
-document.getElementById("importBtn").addEventListener("click",()=>{
-  document.getElementById("importFile").click();
-});
-document.getElementById("importFile").addEventListener("change",async e=>{
-  const file=e.target.files[0];
-  if(!file)return;
+ const deviceRows=document.getElementById("deviceRows");
+ if(deviceRows){
+  deviceRows.innerHTML="";
+  licenses.forEach(x=>{
+   const tr=document.createElement("tr");
+   [x.name, x.deviceLimit, (x.devices||[]).length].forEach(v=>{
+    const td=document.createElement("td");
+    td.textContent=v;
+    tr.appendChild(td);
+   });
+   deviceRows.appendChild(tr);
+  });
+ }
+}
+
+function revokeLicense(id){
+ const item=licenses.find(x=>x.id===id);
+ if(item && confirm("Revoke this local demo license?")){
+  item.status="Revoked";saveData();
+ }
+}
+
+function expireLicense(id){
+ const item=licenses.find(x=>x.id===id);
+ if(item && confirm("Expire this local demo license now?")){
+  item.expiry=new Date(Date.now()-1000).toISOString();
+  saveData();
+ }
+}
+
+async function testAPI(){
+ const url=document.getElementById("apiUrl").value.trim();
+ const status=document.getElementById("apiStatus");
+ const output=document.getElementById("apiResult");
+ if(!url){status.textContent="Enter an endpoint URL";return}
+ try{
+  new URL(url);
+ }catch(e){status.textContent="Invalid URL";return}
+ status.textContent="Connecting...";
+ output.textContent="Waiting for server...";
+ try{
+  const response=await fetch(url,{method:"GET"});
+  const body=await response.text();
+  status.textContent="HTTP "+response.status+
+    (response.ok?" — Server responded":" — Server returned an error");
+  output.textContent=body;
+ }catch(error){
+  status.textContent="Could not read response";
+  output.textContent=error.message+
+   "\nPossible causes: CORS policy, network error, or server unavailable.";
+ }
+}
+
+function exportData(){
+ const blob=new Blob([JSON.stringify(licenses,null,2)],{type:"application/json"});
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);
+ a.download="keydock-demo-backup.json";
+ a.click();
+ URL.revokeObjectURL(a.href);
+}
+
+function importData(event){
+ const file=event.target.files[0];
+ if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
   try{
-    const data=JSON.parse(await file.text());
-    if(!Array.isArray(data)||data.some(x=>!x||typeof x.key!=="string"||typeof x.customer!=="string")){
-      throw new Error("Invalid format");
-    }
-    if(!confirm("Replace current demo data with "+data.length+" imported records?"))return;
-    licenses=data.map(x=>({
-      id:String(x.id||crypto.randomUUID()),
-      key:x.key,customer:x.customer,
-      deviceLimit:Math.max(1,Number(x.deviceLimit)||1),
-      createdAt:Number(x.createdAt)||Date.now(),
-      expiresAt:x.expiresAt==null?null:Number(x.expiresAt),
-      status:["Active","Revoked"].includes(x.status)?x.status:"Active",
-      devices:Array.isArray(x.devices)?x.devices:[]
-    }));
-    saveData();toast("Backup imported.");
-  }catch{toast("Import failed: invalid JSON backup.");}
-  finally{e.target.value="";}
-});
-render();
+   const data=JSON.parse(reader.result);
+   if(!Array.isArray(data))throw new Error("Invalid data format");
+   if(!data.every(x=>x && typeof x.name==="string" && typeof x.key==="string"))throw new Error("Invalid license records");
+   licenses=data;
+   saveData();
+   alert("Demo data imported.");
+  }catch(e){alert("Import failed: "+e.message)}
+  event.target.value="";
+ };
+ reader.readAsText(file);
+}
+
+function clearData(){
+ if(confirm("Delete all local demo license records?")){
+  licenses=[];
+  saveData();
+ }
+}
+
+loadData();
 </script>
 </body>
-                             </html>
-                             
+</html>
